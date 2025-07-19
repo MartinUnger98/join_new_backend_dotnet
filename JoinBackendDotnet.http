@@ -1,0 +1,6 @@
+@JoinBackendDotnet_HostAddress = http://localhost:5283
+
+GET {{JoinBackendDotnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
