@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinBackendDotnet", "JoinBackendDotnet.csproj", "{D5F45C2D-BFD0-C06C-F0DE-AEE5EE76366E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5F45C2D-BFD0-C06C-F0DE-AEE5EE76366E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F45C2D-BFD0-C06C-F0DE-AEE5EE76366E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F45C2D-BFD0-C06C-F0DE-AEE5EE76366E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F45C2D-BFD0-C06C-F0DE-AEE5EE76366E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F30D511A-8879-4C52-94B0-A07006FE2F66}
+	EndGlobalSection
+EndGlobal

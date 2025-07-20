@@ -9,6 +9,7 @@ namespace JoinBackendDotnet.Data
             : base(options) { }
 
         public DbSet<JoinBackendDotnet.Models.Task> Tasks { get; set; }
+        public DbSet<Subtask> Subtasks { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<AuthToken> Tokens { get; set; }
@@ -24,6 +25,13 @@ namespace JoinBackendDotnet.Data
             modelBuilder.Entity<Contact>()
                 .HasIndex(c => c.Email)
                 .IsUnique();
+
+            // Task - Subtask Relationship
+            modelBuilder.Entity<Subtask>()
+                .HasOne<JoinBackendDotnet.Models.Task>()
+                .WithMany(t => t.Subtasks)
+                .HasForeignKey(s => s.Task)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

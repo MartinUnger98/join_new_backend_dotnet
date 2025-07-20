@@ -24,6 +24,8 @@ appsettings.*.json
 
 # Database files
 *.db
+*.db-shm
+*.db-wal
 
 # Configuration files
 *.secret.json

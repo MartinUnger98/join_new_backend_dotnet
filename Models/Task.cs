@@ -17,40 +17,16 @@ namespace JoinBackendDotnet.Models
         public DateTime DueDate { get; set; }
 
         [Required]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Priority Priority { get; set; }
+        public string Priority { get; set; } = "Urgent";
 
         [Required]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Category Category { get; set; }
+        public string Category { get; set; } = "Technical Task";
 
         [Required]
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public Status Status { get; set; }
+        public string Status { get; set; } = "To do";
 
-        // Platzhalter: Liste von Namen als Strings (später als Contact-Objekte ersetzen)
-        public List<string> AssignedTo { get; set; } = new List<string>();
-    }
+        public List<int> AssignedTo { get; set; } = new();
 
-    public enum Priority
-    {
-        Urgent,
-        Medium,
-        Low
-    }
-
-    public enum Category
-    {
-        TechnicalTask,
-        UserStory,
-        Bug
-    }
-
-    public enum Status
-    {
-        ToDo,
-        InProgress,
-        AwaitFeedback,
-        Done
+        public List<Subtask> Subtasks { get; set; } = new();
     }
 }
