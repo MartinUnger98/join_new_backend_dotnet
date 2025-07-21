@@ -1,6 +1,8 @@
 using JoinBackendDotnet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,13 @@ builder.Services.AddCors(options =>
 });
 
 // 🧭 Controller- und API-Dokumentation
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(
+        new JsonStringEnumConverter(null, allowIntegerValues: false)
+    );
+});
+
 builder.Services.AddEndpointsApiExplorer();
 
 // 🧾 Swagger-Konfiguration inkl. Token-Auth

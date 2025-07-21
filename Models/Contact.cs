@@ -18,8 +18,7 @@ namespace JoinBackendDotnet.Models
 
         public int UserId { get; set; }
         public User? User { get; set; }
-        
-        public ICollection<Task> Tasks { get; set; } = new List<Task>();
+        public List<Task> Tasks { get; set; } = new();
     }
 
     public enum BgColor
