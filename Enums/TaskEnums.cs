@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace JoinBackendDotnet.Models
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum Priority
     {
         [EnumMember(Value = "Low")]
@@ -16,7 +16,7 @@ namespace JoinBackendDotnet.Models
         Urgent
     }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum Category
     {
         [EnumMember(Value = "Bug")]
@@ -29,7 +29,7 @@ namespace JoinBackendDotnet.Models
         TechnicalTask
     }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum Status
     {
         [EnumMember(Value = "To do")]

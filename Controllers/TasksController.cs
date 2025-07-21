@@ -4,6 +4,7 @@ using JoinBackendDotnet.Data;
 using JoinBackendDotnet.Models;
 using JoinBackendDotnet.DTOs;
 using ModelsTask = JoinBackendDotnet.Models.Task;
+using System.Runtime.Serialization;
 
 namespace JoinBackendDotnet.Controllers
 {
@@ -105,9 +106,9 @@ namespace JoinBackendDotnet.Controllers
                         title = task.Title,
                         description = task.Description,
                         due_date = task.DueDate.ToString("yyyy-MM-dd"),
-                        priority = task.Priority.ToString(),
-                        category = task.Category.ToString(),
-                        status = task.Status.ToString(),
+                        priority = GetEnumMemberValue(task.Priority),
+                        category = GetEnumMemberValue(task.Category),
+                        status = GetEnumMemberValue(task.Status),
                         assigned_to = task.AssignedTo.Select(c => c.Id).ToList()
                     }
                 }
@@ -133,7 +134,7 @@ namespace JoinBackendDotnet.Controllers
             return NoContent();
         }
 
-        // 🔧 Subtask-Mapping
+        // Subtask Mapping
         private static List<Subtask> MapSubtasksFromCreateDto(IEnumerable<SubtaskCreateTaskDto> subtasks, int taskId = 0)
         {
             return subtasks.Select(s => new Subtask
@@ -145,7 +146,7 @@ namespace JoinBackendDotnet.Controllers
             }).ToList();
         }
 
-        // 🔧 Response-Dto-Mapping
+        // DTO Mapping
         private static TaskResponseDto MapToResponseDto(ModelsTask task)
         {
             return new TaskResponseDto
@@ -154,9 +155,9 @@ namespace JoinBackendDotnet.Controllers
                 Title = task.Title,
                 Description = task.Description,
                 DueDate = task.DueDate.ToString("yyyy-MM-dd"),
-                Priority = task.Priority.ToString(),
-                Category = task.Category.ToString(),
-                Status = task.Status.ToString(),
+                Priority = GetEnumMemberValue(task.Priority),
+                Category = GetEnumMemberValue(task.Category),
+                Status = GetEnumMemberValue(task.Status),
                 AssignedTo = task.AssignedTo.Select(c => c.Id).ToList(),
                 Subtasks = task.Subtasks.Select(st => new SubtaskDto
                 {
@@ -169,7 +170,7 @@ namespace JoinBackendDotnet.Controllers
             };
         }
 
-        // 🔧 Enum Parsing mit Fehlertext
+        // Enum Parsing inkl. Fehlerausgabe
         private static bool TryParseEnums(string? priorityRaw, string? categoryRaw, string? statusRaw,
             out Priority priority, out Category category, out Status status, out string error)
         {
@@ -197,6 +198,19 @@ namespace JoinBackendDotnet.Controllers
             }
 
             return true;
+        }
+
+        // EnumMember(Value="...") extrahieren
+        private static string GetEnumMemberValue<T>(T enumValue) where T : Enum
+        {
+            var enumType = typeof(T);
+            var memberInfo = enumType.GetMember(enumValue.ToString());
+            var attribute = memberInfo[0]
+                .GetCustomAttributes(typeof(EnumMemberAttribute), false)
+                .Cast<EnumMemberAttribute>()
+                .FirstOrDefault();
+
+            return attribute?.Value ?? enumValue.ToString();
         }
 
         private static string Normalize(string? input)

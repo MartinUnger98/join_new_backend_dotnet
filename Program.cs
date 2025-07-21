@@ -1,8 +1,8 @@
 using JoinBackendDotnet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using Macross.Json.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,9 +24,7 @@ builder.Services.AddCors(options =>
 // 🧭 Controller- und API-Dokumentation
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.Converters.Add(
-        new JsonStringEnumConverter(null, allowIntegerValues: false)
-    );
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
 });
 
 builder.Services.AddEndpointsApiExplorer();
