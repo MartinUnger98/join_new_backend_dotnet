@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JoinBackendDotnet.Data;
 using JoinBackendDotnet.Models;
-using System.Security.Cryptography;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
+using JoinBackendDotnet.Shared.Utils;
 
 namespace JoinBackendDotnet.Features.Auth
 {
@@ -32,7 +31,7 @@ namespace JoinBackendDotnet.Features.Auth
             if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
                 return BadRequest(new { message = "This email already exists." });
 
-            var hashedPassword = HashPassword(dto.Password);
+            var hashedPassword = AuthUtils.HashPassword(dto.Password);
 
             var user = new User
             {
@@ -56,7 +55,7 @@ namespace JoinBackendDotnet.Features.Auth
         [Route("login")]
         public async Task<ActionResult> Login(UserLoginDto dto)
         {
-            var hashed = HashPassword(dto.Password);
+            var hashed = AuthUtils.HashPassword(dto.Password);
 
             var user = await _context.Users.FirstOrDefaultAsync(u =>
                 (u.Username == dto.UsernameOrEmail || u.Email == dto.UsernameOrEmail) &&
@@ -71,7 +70,7 @@ namespace JoinBackendDotnet.Features.Auth
                 token = new AuthToken
                 {
                     UserId = user.Id,
-                    Token = GenerateToken()
+                    Token = AuthUtils.GenerateToken()
                 };
                 _context.Tokens.Add(token);
                 await _context.SaveChangesAsync();
@@ -98,7 +97,7 @@ namespace JoinBackendDotnet.Features.Auth
                 {
                     Username = "Guest",
                     Email = "guest@example.com",
-                    PasswordHash = HashPassword("guest")
+                    PasswordHash = AuthUtils.HashPassword("guest")
                 };
                 _context.Users.Add(guest);
                 await _context.SaveChangesAsync();
@@ -110,7 +109,7 @@ namespace JoinBackendDotnet.Features.Auth
                 token = new AuthToken
                 {
                     UserId = guest.Id,
-                    Token = GenerateToken()
+                    Token = AuthUtils.GenerateToken()
                 };
                 _context.Tokens.Add(token);
                 await _context.SaveChangesAsync();
@@ -123,19 +122,6 @@ namespace JoinBackendDotnet.Features.Auth
                 email = guest.Email,
                 name = guest.Username
             });
-        }
-
-        private string HashPassword(string password)
-        {
-            using var sha = SHA256.Create();
-            var bytes = Encoding.UTF8.GetBytes(password);
-            var hash = sha.ComputeHash(bytes);
-            return Convert.ToBase64String(hash);
-        }
-
-        private string GenerateToken()
-        {
-            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
         }
     }
 }
