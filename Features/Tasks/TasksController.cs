@@ -6,7 +6,7 @@ using JoinBackendDotnet.DTOs;
 using ModelsTask = JoinBackendDotnet.Models.Task;
 using System.Runtime.Serialization;
 
-namespace JoinBackendDotnet.Controllers
+namespace JoinBackendDotnet.Features.Tasks
 {
     [ApiController]
     [Route("tasks")]

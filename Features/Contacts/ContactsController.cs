@@ -4,7 +4,7 @@ using JoinBackendDotnet.Data;
 using JoinBackendDotnet.Models;
 using JoinBackendDotnet.DTOs;
 
-namespace JoinBackendDotnet.Controllers
+namespace JoinBackendDotnet.Features.Contacts
 {
     [ApiController]
     [Route("contacts")]

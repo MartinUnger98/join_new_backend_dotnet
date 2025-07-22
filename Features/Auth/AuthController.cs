@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
 
-namespace JoinBackendDotnet.Controllers
+namespace JoinBackendDotnet.Features.Auth
 {
     [ApiController]
     public class AuthController : ControllerBase
