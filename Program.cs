@@ -3,25 +3,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using Macross.Json.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔌 DB-Konfiguration
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=join.db"));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Data Source=join.db";
 
-// 🌐 CORS erlauben (für Angular-Frontend z. B.)
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(connectionString));
+
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:4200" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// 🧭 Controller- und API-Dokumentation
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
@@ -29,12 +33,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 
-// 🧾 Swagger-Konfiguration inkl. Token-Auth
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Join API", Version = "v1" });
 
-    // 🔐 Token-Auth hinzufügen (wie "Token xyz123")
     c.AddSecurityDefinition("Token", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -62,10 +64,19 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// 🧠 CORS aktivieren
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseCors("AllowFrontend");
 
-// 🧪 Swagger nur im Dev-Modus
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

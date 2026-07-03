@@ -1,0 +1,12 @@
+services:
+  join-backend:
+    build: .
+    container_name: join-backend
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - ./appsettings.Production.json:/app/appsettings.Production.json:ro
+      - ./data:/data
+    ports:
+      - "127.0.0.1:5080:8080"

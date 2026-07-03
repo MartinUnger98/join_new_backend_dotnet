@@ -17,7 +17,6 @@ namespace JoinBackendDotnet.Features.Auth
             _context = context;
         }
 
-        // POST: /register
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult> Register(UserRegisterDto dto)
@@ -50,7 +49,6 @@ namespace JoinBackendDotnet.Features.Auth
 
         }
 
-        // POST: /login
         [HttpPost]
         [Route("login")]
         public async Task<ActionResult> Login(UserLoginDto dto)
@@ -85,7 +83,6 @@ namespace JoinBackendDotnet.Features.Auth
             });
         }
 
-        // POST: /guest-login
         [HttpPost]
         [Route("guest_login")]
         public async Task<ActionResult> GuestLogin()

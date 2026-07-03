@@ -17,7 +17,6 @@ namespace JoinBackendDotnet.Features.Contacts
             _context = context;
         }
 
-        // GET: /contacts
         [HttpGet]
         public async Task<ActionResult<List<ContactResponseDto>>> GetContacts([FromHeader(Name = "Authorization")] string authHeader)
         {
@@ -32,7 +31,6 @@ namespace JoinBackendDotnet.Features.Contacts
             return Ok(dtoList);
         }
 
-        // POST: /contacts
         [HttpPost]
         public async Task<ActionResult<ContactResponseDto>> CreateContact(
             [FromHeader(Name = "Authorization")] string authHeader,
@@ -75,7 +73,6 @@ namespace JoinBackendDotnet.Features.Contacts
         }
 
 
-        // PUT: /contacts/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateContact(
             int id,
@@ -88,7 +85,6 @@ namespace JoinBackendDotnet.Features.Contacts
             var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id && c.UserId == user.Id);
             if (contact == null) return NotFound();
 
-            // ✅ E-Mail darf nur verwendet werden, wenn sie eindeutig oder gleich bleibt
             if (!string.IsNullOrEmpty(dto.Email) && dto.Email != contact.Email)
             {
                 if (await _context.Contacts.AnyAsync(c => c.Email == dto.Email && c.Id != id))
@@ -122,7 +118,6 @@ namespace JoinBackendDotnet.Features.Contacts
             return Ok(response);
         }
 
-        // DELETE: /contacts/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContact(int id, [FromHeader(Name = "Authorization")] string authHeader)
         {
@@ -138,7 +133,6 @@ namespace JoinBackendDotnet.Features.Contacts
             return NoContent();
         }
 
-        // 🔐 Token-Handling (einfach wie in AuthController)
         private async Task<User?> GetUserFromToken(string authHeader)
         {
             if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Token ")) return null;
@@ -148,14 +142,12 @@ namespace JoinBackendDotnet.Features.Contacts
             return tokenRecord?.User;
         }
 
-        // 🎨 Random-Farbe
         private static BgColor GetRandomColor()
         {
             var values = Enum.GetValues<BgColor>();
             return values[new Random().Next(values.Length)];
         }
 
-        // 🎨 Enum zu Hex-Code
         private static string GetColorCode(BgColor color)
         {
             return color switch
@@ -172,7 +164,6 @@ namespace JoinBackendDotnet.Features.Contacts
             };
         }
 
-        // 🧠 DTO Mapping
         private static ContactResponseDto MapToDto(Contact contact)
         {
             return new ContactResponseDto

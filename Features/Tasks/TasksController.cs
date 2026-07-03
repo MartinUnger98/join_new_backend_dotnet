@@ -134,7 +134,6 @@ namespace JoinBackendDotnet.Features.Tasks
             return NoContent();
         }
 
-        // Subtask Mapping
         private static List<Subtask> MapSubtasksFromCreateDto(IEnumerable<SubtaskCreateTaskDto> subtasks, int taskId = 0)
         {
             return subtasks.Select(s => new Subtask
@@ -146,7 +145,6 @@ namespace JoinBackendDotnet.Features.Tasks
             }).ToList();
         }
 
-        // DTO Mapping
         private static TaskResponseDto MapToResponseDto(ModelsTask task)
         {
             return new TaskResponseDto
@@ -170,7 +168,6 @@ namespace JoinBackendDotnet.Features.Tasks
             };
         }
 
-        // Enum Parsing inkl. Fehlerausgabe
         private static bool TryParseEnums(string? priorityRaw, string? categoryRaw, string? statusRaw,
             out Priority priority, out Category category, out Status status, out string error)
         {
@@ -200,7 +197,6 @@ namespace JoinBackendDotnet.Features.Tasks
             return true;
         }
 
-        // EnumMember(Value="...") extrahieren
         private static string GetEnumMemberValue<T>(T enumValue) where T : Enum
         {
             var enumType = typeof(T);
