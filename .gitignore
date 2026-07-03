@@ -18,6 +18,7 @@ obj/
 # ASP.NET
 appsettings.Development.json
 appsettings.*.json
+!appsettings.Production.json
 
 # Logs
 *.log
