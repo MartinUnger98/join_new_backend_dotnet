@@ -2,7 +2,6 @@ using JoinBackendDotnet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
-using Macross.Json.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,12 +69,8 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors("AllowFrontend");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseHttpsRedirection();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthorization();
 
